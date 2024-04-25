@@ -1,0 +1,20 @@
+{
+  "name": "automation-api-cypress",
+  "version": "1.0.0",
+  "description": "Sample project to experiment with Typeform's API",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "cy:open": "cypress open"
+  },
+  "keywords": [
+    "Typeform",
+    "Cypress",
+    "API-Testing"
+  ],
+  "author": "Michelle Duso",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^13.8.1"
+  }
+}

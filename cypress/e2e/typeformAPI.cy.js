@@ -1,4 +1,4 @@
-/// <reference types="cypress"/>
+const sampleForm = require('../fixtures/sampleForm.json')
 
 describe('Typeform API Tests', () => {
     const API_URL = Cypress.env('API_BASE_URL');
@@ -14,8 +14,8 @@ describe('Typeform API Tests', () => {
             expect(response.body.alias).to.eq(Cypress.env('userAlias'));
             expect(response.body.email).to.eq(Cypress.env('username'));
             expect(response.body.language).to.eq('en');
-        });
-    });
+        })
+    })
 
     it('retrieves form responses', () => {
         cy.api({
@@ -24,8 +24,23 @@ describe('Typeform API Tests', () => {
             headers: { authorization}
         }).should(({ status, body }) => {
             expect(status).to.eq(200);
-            expect(body.total_items).to.eq(body.items.length);           
+            expect(body.total_items).to.eq(body.items.length);    
+        })  
+    })
 
-        })    
-    });
-});
+    it('creates a sample form', () => {
+        cy.api({
+            method: 'POST',
+            url: `${API_URL}forms`,
+            headers: { authorization },
+            body: sampleForm
+        }).should(({ status, body }) => {
+            const { fields, title, type, } = body
+            expect(status).to.eq(201);
+            expect(fields.length).to.eq(sampleForm.fields.length);
+            expect(title).to.eq(sampleForm.title);
+            expect(type).to.eq(sampleForm.type);
+            expect(fields.href).to.eq(sampleForm.fields.href);        
+        })
+    })    
+})

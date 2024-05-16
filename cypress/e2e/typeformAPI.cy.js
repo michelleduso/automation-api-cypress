@@ -17,7 +17,7 @@ describe('Typeform API Tests', () => {
         })
     })
 
-    it('retrieves form responses', () => {
+    it('Retrieves form responses', () => {
         cy.api({
             method: 'GET',
             url: `${API_URL}forms/${Cypress.env('formId')}/responses`,
@@ -27,6 +27,28 @@ describe('Typeform API Tests', () => {
             expect(body.total_items).to.eq(body.items.length);    
         })  
     })
+
+    it('Cleanup before start', () => {
+        cy.api({
+            method: 'GET',
+            url: `${API_URL}forms`,
+            headers: { authorization },
+        }).then(({ status, body }) => {
+            expect(status).to.eq(200);
+            body.items.forEach(item => {
+                if (item.title === sampleForm.title) { // Certifique-se que 'sampleForm' está definido no contexto correto
+                    cy.request({
+                        method: 'DELETE',
+                        url: `${API_URL}forms/${item.id}`,
+                        headers: { authorization },
+                    }).then(({ status }) => {
+                        expect(status).to.eq(204);
+                    });
+                }
+            });
+        });
+    });
+
 
     it('creates a sample form', () => {
         cy.api({

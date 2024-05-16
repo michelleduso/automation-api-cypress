@@ -36,7 +36,7 @@ describe('Typeform API Tests', () => {
         }).then(({ status, body }) => {
             expect(status).to.eq(200);
             body.items.forEach(item => {
-                if (item.title === sampleForm.title) { // Certifique-se que 'sampleForm' está definido no contexto correto
+                if (item.title === sampleForm.title) { 
                     cy.request({
                         method: 'DELETE',
                         url: `${API_URL}forms/${item.id}`,
